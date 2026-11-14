@@ -6,7 +6,8 @@ SwiftUI layout for Apple Watch Series 9, haptics, win detection, and restart.
 ## Build on macOS
 
 The GitHub Actions `Build Watch App` workflow runs on the public `xcode-27`
-runner, verifies the game core, and uploads `AIGomoku-unsigned.zip`.
+runner, verifies the game core, and uploads both a standalone Watch bundle and
+an unsigned IPA with an iPhone host plus the embedded Watch companion.
 
 For a local build:
 

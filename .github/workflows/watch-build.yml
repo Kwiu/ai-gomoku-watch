@@ -51,6 +51,21 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      - name: Build unsigned iPhone companion
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project AIGomoku.xcodeproj \
+            -scheme AIGomokuCompanion \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination "generic/platform=iOS" \
+            -derivedDataPath build-host \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
       - name: Verify bundle
         run: |
           set -euo pipefail
@@ -61,11 +76,25 @@ jobs:
           plutil -p "$APP_PATH/Info.plist"
           test "$(/usr/libexec/PlistBuddy -c 'Print :WKApplication' "$APP_PATH/Info.plist")" = "true"
           test "$(/usr/libexec/PlistBuddy -c 'Print :UIDeviceFamily:0' "$APP_PATH/Info.plist")" = "4"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :WKCompanionAppBundleIdentifier' "$APP_PATH/Info.plist")" = "com.kivv.aigomoku.companion"
           file "$APP_PATH/AIGomoku"
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" AIGomoku-unsigned.zip
 
+          HOST_APP="$(find build-host/Build/Products -type d -name AIGomokuCompanion.app -print -quit)"
+          test -n "$HOST_APP"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$HOST_APP/Info.plist")" = "com.kivv.aigomoku.companion"
+          file "$HOST_APP/AIGomokuCompanion"
+
+          rm -rf Payload
+          mkdir -p "Payload/AIGomokuCompanion.app/Watch"
+          ditto "$HOST_APP" "Payload/AIGomokuCompanion.app"
+          ditto "$APP_PATH" "Payload/AIGomokuCompanion.app/Watch/AIGomoku.app"
+          zip -qry AIGomoku-companion-unsigned.ipa Payload
+
       - uses: actions/upload-artifact@v4
         with:
-          name: AIGomoku-unsigned
-          path: AIGomoku-unsigned.zip
+          name: AIGomoku-builds
+          path: |
+            AIGomoku-unsigned.zip
+            AIGomoku-companion-unsigned.ipa
           if-no-files-found: error

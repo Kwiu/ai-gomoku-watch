@@ -14,5 +14,7 @@
     </array>
     <key>WKApplication</key>
     <true/>
+    <key>WKCompanionAppBundleIdentifier</key>
+    <string>com.kivv.aigomoku.companion</string>
 </dict>
 </plist>

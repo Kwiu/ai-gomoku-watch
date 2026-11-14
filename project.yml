@@ -33,3 +33,23 @@ targets:
         CODE_SIGNING_ALLOWED: NO
     scheme:
       gatherCoverageData: false
+
+  AIGomokuCompanion:
+    type: application
+    platform: iOS
+    deploymentTarget: "17.0"
+    sources:
+      - path: Sources/AIGomokuCompanion
+    info:
+      path: Support/CompanionInfo.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kivv.aigomoku.companion
+        PRODUCT_NAME: AIGomokuCompanion
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Support/CompanionInfo.plist
+        TARGETED_DEVICE_FAMILY: "1,2"
+        SUPPORTS_MACCATALYST: NO
+        CODE_SIGNING_ALLOWED: NO
+    scheme:
+      gatherCoverageData: false
