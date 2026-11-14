@@ -15,6 +15,6 @@
     <key>WKApplication</key>
     <true/>
     <key>WKCompanionAppBundleIdentifier</key>
-    <string>com.kivv.aigomoku.companion</string>
+    <string>com.kivv.aigomoku</string>
 </dict>
 </plist>

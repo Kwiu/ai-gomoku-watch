@@ -23,7 +23,7 @@ targets:
       path: Support/Info.plist
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.kivv.aigomoku
+        PRODUCT_BUNDLE_IDENTIFIER: com.kivv.aigomoku.watchkitapp
         PRODUCT_NAME: AIGomoku
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: Support/Info.plist
@@ -44,7 +44,7 @@ targets:
       path: Support/CompanionInfo.plist
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.kivv.aigomoku.companion
+        PRODUCT_BUNDLE_IDENTIFIER: com.kivv.aigomoku
         PRODUCT_NAME: AIGomokuCompanion
         GENERATE_INFOPLIST_FILE: NO
         INFOPLIST_FILE: Support/CompanionInfo.plist

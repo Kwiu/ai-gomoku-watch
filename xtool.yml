@@ -1,4 +1,4 @@
 version: 1
-bundleID: com.kivv.aigomoku
+bundleID: com.kivv.aigomoku.watchkitapp
 platform: watchos
 infoPath: Support/Info.plist

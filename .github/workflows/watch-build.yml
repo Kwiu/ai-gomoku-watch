@@ -73,18 +73,19 @@ jobs:
           test -n "$APP_PATH"
           /usr/libexec/PlistBuddy -c 'Add :WKApplication bool true' "$APP_PATH/Info.plist" 2>/dev/null || \
             /usr/libexec/PlistBuddy -c 'Set :WKApplication true' "$APP_PATH/Info.plist"
-          /usr/libexec/PlistBuddy -c 'Add :WKCompanionAppBundleIdentifier string com.kivv.aigomoku.companion' "$APP_PATH/Info.plist" 2>/dev/null || \
-            /usr/libexec/PlistBuddy -c 'Set :WKCompanionAppBundleIdentifier com.kivv.aigomoku.companion' "$APP_PATH/Info.plist"
+          /usr/libexec/PlistBuddy -c 'Add :WKCompanionAppBundleIdentifier string com.kivv.aigomoku' "$APP_PATH/Info.plist" 2>/dev/null || \
+            /usr/libexec/PlistBuddy -c 'Set :WKCompanionAppBundleIdentifier com.kivv.aigomoku' "$APP_PATH/Info.plist"
           plutil -p "$APP_PATH/Info.plist"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$APP_PATH/Info.plist")" = "com.kivv.aigomoku.watchkitapp"
           test "$(/usr/libexec/PlistBuddy -c 'Print :WKApplication' "$APP_PATH/Info.plist")" = "true"
           test "$(/usr/libexec/PlistBuddy -c 'Print :UIDeviceFamily:0' "$APP_PATH/Info.plist")" = "4"
-          test "$(/usr/libexec/PlistBuddy -c 'Print :WKCompanionAppBundleIdentifier' "$APP_PATH/Info.plist")" = "com.kivv.aigomoku.companion"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :WKCompanionAppBundleIdentifier' "$APP_PATH/Info.plist")" = "com.kivv.aigomoku"
           file "$APP_PATH/AIGomoku"
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" AIGomoku-unsigned.zip
 
           HOST_APP="$(find build-host/Build/Products -type d -name AIGomokuCompanion.app -print -quit)"
           test -n "$HOST_APP"
-          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$HOST_APP/Info.plist")" = "com.kivv.aigomoku.companion"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$HOST_APP/Info.plist")" = "com.kivv.aigomoku"
           file "$HOST_APP/AIGomokuCompanion"
 
           rm -rf Payload
