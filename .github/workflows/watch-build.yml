@@ -1,0 +1,69 @@
+name: Build Watch App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: xcode-27
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk watchos --show-sdk-version
+
+      - name: Verify game core
+        run: |
+          swiftc Sources/GomokuCore/Board.swift \
+            Sources/GomokuCore/AI.swift \
+            Verification/main.swift \
+            -o gomoku-core-verification
+          ./gomoku-core-verification
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Build unsigned Watch app
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project AIGomoku.xcodeproj \
+            -scheme AIGomoku \
+            -configuration Release \
+            -sdk watchos \
+            -destination "generic/platform=watchOS" \
+            -derivedDataPath build \
+            ARCHS=arm64 \
+            ONLY_ACTIVE_ARCH=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Verify bundle
+        run: |
+          set -euo pipefail
+          APP_PATH="$(find build/Build/Products -type d -name AIGomoku.app -print -quit)"
+          test -n "$APP_PATH"
+          plutil -p "$APP_PATH/Info.plist"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :WKApplication' "$APP_PATH/Info.plist")" = "true"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :UIDeviceFamily:0' "$APP_PATH/Info.plist")" = "4"
+          file "$APP_PATH/AIGomoku"
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" AIGomoku-unsigned.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: AIGomoku-unsigned
+          path: AIGomoku-unsigned.zip
+          if-no-files-found: error

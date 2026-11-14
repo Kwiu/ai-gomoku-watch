@@ -1,0 +1,29 @@
+name: AIGomoku
+
+options:
+  bundleIdPrefix: com.kivv
+  deploymentTarget:
+    watchOS: "10.0"
+  xcodeVersion: "27.0"
+
+targets:
+  AIGomoku:
+    type: application
+    platform: watchOS
+    sources:
+      - path: Sources/AIGomoku
+      - path: Sources/GomokuCore
+    info:
+      path: Support/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kivv.aigomoku
+        PRODUCT_NAME: AIGomoku
+        GENERATE_INFOPLIST_FILE: NO
+        INFOPLIST_FILE: Support/Info.plist
+        WATCHOS_DEPLOYMENT_TARGET: "10.0"
+        TARGETED_DEVICE_FAMILY: "4"
+        SUPPORTS_MACCATALYST: NO
+        CODE_SIGNING_ALLOWED: NO
+    scheme:
+      gatherCoverageData: false
