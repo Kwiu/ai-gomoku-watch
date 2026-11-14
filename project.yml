@@ -6,13 +6,19 @@ options:
     watchOS: "10.0"
   xcodeVersion: "27.0"
 
+packages:
+  GomokuCore:
+    path: .
+
 targets:
   AIGomoku:
     type: application
     platform: watchOS
     sources:
       - path: Sources/AIGomoku
-      - path: Sources/GomokuCore
+    dependencies:
+      - package: GomokuCore
+        product: GomokuCore
     info:
       path: Support/Info.plist
     settings:
