@@ -12,7 +12,7 @@ packages:
 
 targets:
   AIGomoku:
-    type: application.watchapp2
+    type: application
     platform: watchOS
     sources:
       - path: Sources/AIGomoku

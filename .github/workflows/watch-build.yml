@@ -56,6 +56,8 @@ jobs:
           set -euo pipefail
           APP_PATH="$(find build/Build/Products -type d -name AIGomoku.app -print -quit)"
           test -n "$APP_PATH"
+          /usr/libexec/PlistBuddy -c 'Add :WKApplication bool true' "$APP_PATH/Info.plist" 2>/dev/null || \
+            /usr/libexec/PlistBuddy -c 'Set :WKApplication true' "$APP_PATH/Info.plist"
           plutil -p "$APP_PATH/Info.plist"
           test "$(/usr/libexec/PlistBuddy -c 'Print :WKApplication' "$APP_PATH/Info.plist")" = "true"
           test "$(/usr/libexec/PlistBuddy -c 'Print :UIDeviceFamily:0' "$APP_PATH/Info.plist")" = "4"
